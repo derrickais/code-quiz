@@ -11,7 +11,11 @@ header {
 
 h2 a {
     text-decoration: none;
-    color: violet;
+    color: #BD60E7;
+}
+
+h2 a:hover {
+    color: #c89bdd;
 }
 
 main {
@@ -24,12 +28,35 @@ main {
     margin: 0px auto;
 }
 
-button {
-    background-color: blueviolet;
-    border: none;
+button, li{
+    background-color: #361C75;
     color: white;
+    border: 20px;
     border-radius: 10px;
     padding: 20px 25px;
     font-size: 20px;
 }
+
+ol {
+    align-self: flex-start;
+    list-style-type: decimal;
+}
+
+li {
+    margin: 15px;
+    text-align: left;
+}
+
+li:hover, button:hover{
+    background-color: #BD60E7;
+}
+
+h3 { 
+    border-top: 2px solid #B9B9B9;
+    width: 110%;
+    text-align: left;
+    color: #B9B9B9;
+    padding: 10px;
+}
+
 

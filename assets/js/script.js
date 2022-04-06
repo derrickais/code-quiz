@@ -1,14 +1,15 @@
 var mainEl = document.querySelector("main");
 var buttonEl = document.querySelector("button");
-var ulEl = document.querySelector("ul");
-var h3El = document.createElement("h3");
+var olEl = document.querySelector("ol");
 var h1El = document.querySelector("h1");
 var pEl = document.querySelector("p");
 var timerEl = document.querySelector(".timer");
 
+var h3El = document.createElement("h3");
 
 var questionNum = 0;
 var timeLeft = 75;
+var timeInterval;
 var qAndA = [{
     question : "Commonly used data types do NOT include:",
     answers : ["strings", "booleans", "alerts", "numbers"],
@@ -28,7 +29,7 @@ var qAndA = [{
 }, {
     question : "A very useful tool used during development and debugging for printing content to the debugger is",
     answers : ["JavaScript", "terminal/bash", "for loops", "console.log"],
-    tAnswer :  "curly brackets"
+    tAnswer :  "console.log"
 }];
 
 var startQuiz = function(event){
@@ -42,8 +43,8 @@ var startQuiz = function(event){
     //creates <li> for each answer
     for(i = 0; i < 4; i++){
         var liEl = document.createElement("li");
-        liEl.textContent = qAndA[questionNum].answers[i];
-        ulEl.appendChild(liEl);
+        liEl.textContent = i+1 + ". " + qAndA[questionNum].answers[i];
+        olEl.appendChild(liEl);
     }
 
     //remove start quiz button
@@ -53,8 +54,9 @@ var startQuiz = function(event){
 var checkAnswer = function(event){
     console.log(event.target.textContent);
     
+    answer = event.target.textContent.includes(qAndA[questionNum].tAnswer)
     //checks to see if user clicked right answer 
-    if (event.target.textContent == qAndA[questionNum].tAnswer){
+    if (answer){
         h3El.textContent = "Correct!"
     }else{
         h3El.textContent = "Wrong!"
@@ -68,7 +70,7 @@ var checkAnswer = function(event){
     }
     mainEl.appendChild(h3El);
 
-    ulEl.textContent = "";
+    olEl.textContent = "";
     questionNum ++;
     
     //checks if there's another question before going to endQuiz()
@@ -80,30 +82,32 @@ var checkAnswer = function(event){
 }
 
 var endQuiz = function(){
-    h1El.textContent = "All done";
-    pEl.textContent = "Your final score is";
-    ulEl.textContent = "";
+    clearInterval(timeInterval);
+    timerEl.textContent = "Timer: " + timeLeft;
 
+    h1El.textContent = "All done";
+    pEl.textContent = "Your final score is " + timeLeft;
+    olEl.textContent = "";
 }
+
 //creates a timer that counts down from 75
 var timer = function(event){
     
     timerEl.textContent = "Timer: " + timeLeft;
 
-    var timeInterval = setInterval(function() {
+    timeInterval = setInterval(function() {
         if (timeLeft > 0){
             timeLeft --;
             timerEl.textContent = "Timer: " + timeLeft;
-        } else {
-            clearInterval(timeInterval);
+        } else if (timeLeft == 0) {
             endQuiz();
         }
     }, 1000);
     
 }
 
-//runs check answer function when user clicks in the <ul>
-ulEl.addEventListener("click", checkAnswer);
+//runs check answer function when user clicks in the <ol>
+olEl.addEventListener("click", checkAnswer);
 buttonEl.addEventListener("click", startQuiz);
 buttonEl.addEventListener("click", timer);
 
