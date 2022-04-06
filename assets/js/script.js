@@ -4,6 +4,7 @@ var olEl = document.querySelector("ol");
 var h1El = document.querySelector("h1");
 var pEl = document.querySelector("p");
 var timerEl = document.querySelector(".timer");
+var divEl = document.querySelector("div");
 
 var h3El = document.createElement("h3");
 
@@ -81,13 +82,47 @@ var checkAnswer = function(event){
     }
 }
 
-var endQuiz = function(){
+//ends quiz and gives player high score 
+var endQuiz = function(event){
+    
     clearInterval(timeInterval);
     timerEl.textContent = "Timer: " + timeLeft;
 
     h1El.textContent = "All done";
     pEl.textContent = "Your final score is " + timeLeft;
     olEl.textContent = "";
+
+    var h4El = document.createElement("h4")
+    divEl.innerHTML = "<form> <label for 'initials'> Initials:</label> <input type='text' id='initial' name='initial'><input type='submit' value='Submit'></form>"
+    // add click event listner to submit button
+    divEl.addEventListener("submit", highScore);
+    // on the submit button click event listener callback,
+    //      get the value from the #initial input field
+
+
+}
+
+var highScore = function(event) {
+    
+    event.preventDefault();
+
+    var inputEl = document.querySelector("#initial");
+    initials = inputEl.value;
+    console.log(initials);
+
+    initials = JSON.stringify(initials)
+
+    var hS = localStorage.getItem("highscore")
+
+    if (hS === null){
+        highScore = 0;
+        initials = "No high score yet!"
+    }
+
+    if (timeLeft > hS){
+        localStorage.setItem("highscore", timeLeft)
+        localStorage.setItem("initials", initials);
+    }
 }
 
 //creates a timer that counts down from 75
