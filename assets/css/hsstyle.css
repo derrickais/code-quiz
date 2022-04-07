@@ -1,0 +1,24 @@
+main {
+    align-items: flex-start;
+}
+
+ol {
+    background-color: #D9D3E9;
+    border-radius: 0%;
+    width: 100%;
+    text-align: left;
+}
+
+li {
+    background-color: #D9D3E9;
+    padding: 0px;
+    color: black;
+}
+
+li:hover {
+    background-color: #D9D3E9;
+}
+
+button {
+    padding: 8px 12px;
+}
