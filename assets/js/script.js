@@ -10,7 +10,9 @@ var h3El = document.createElement("h3");
 
 var questionNum = 0;
 var timeLeft = 75;
+var time = 2;
 var timeInterval;
+var bannerTime;
 var qAndA = [{
     question : "Commonly used data types do NOT include:",
     answers : ["strings", "booleans", "alerts", "numbers"],
@@ -52,12 +54,36 @@ var startQuiz = function(event){
     buttonEl.remove()
 }
 
+//removes h3 after 5 seconds 
+var bottomBanner = function(){
+    h3El.style.display = "block";
+
+    bannerTime = setInterval(function() {
+        if (time > 0){
+            time--;
+            console.log(time);
+        } else if (time == 0) {
+            h3El.style.display = "none";
+            mainEl.appendChild(h3El);
+            time = 2;
+            clearInterval(bannerTime);
+        }
+        
+    }, 1000);
+}
+
+
 var checkAnswer = function(event){
-    console.log(event.target.textContent);
-    
-    answer = event.target.textContent.includes(qAndA[questionNum].tAnswer)
+    clearInterval(bannerTime);
+    answer = event.target;
+
+    correct = answer.textContent.includes(qAndA[questionNum].tAnswer)
     //checks to see if user clicked right answer 
-    if (answer){
+    if (answer.localName === "ol"){
+        return;
+    }
+
+    if (correct){
         h3El.textContent = "Correct!"
     }else{
         h3El.textContent = "Wrong!"
@@ -73,6 +99,9 @@ var checkAnswer = function(event){
 
     olEl.textContent = "";
     questionNum ++;
+
+    bottomBanner();
+    
     
     //checks if there's another question before going to endQuiz()
     if (questionNum == qAndA.length){
@@ -90,39 +119,45 @@ var endQuiz = function(event){
 
     h1El.textContent = "All done";
     pEl.textContent = "Your final score is " + timeLeft;
-    olEl.textContent = "";
+    olEl.remove();
+    var h4El = document.createElement("h4");
 
-    var h4El = document.createElement("h4")
-    divEl.innerHTML = "<form> <label for 'initials'> Initials:</label> <input type='text' id='initial' name='initial'><input type='submit' value='Submit'></form>"
-    // add click event listner to submit button
+    mainEl.setAttribute("class", "enterHS");
+
+    divEl.innerHTML = "<form> <label for 'initials'>Enter Initials:</label> <input type='text' id='initial' name='initial' maxlength = '3'> <input type='submit' id='submit' value='Submit'></form>"
+ 
+    
     divEl.addEventListener("submit", highScore);
-    // on the submit button click event listener callback,
-    //      get the value from the #initial input field
-
-
 }
 
 var highScore = function(event) {
-    
     event.preventDefault();
 
+    var formEl = document.querySelector("form");
     var inputEl = document.querySelector("#initial");
-    initials = inputEl.value;
-    console.log(initials);
 
-    initials = JSON.stringify(initials)
+    initials = inputEl.value;
 
     var hS = localStorage.getItem("highscore")
 
     if (hS === null){
         highScore = 0;
-        initials = "No high score yet!"
     }
-
+    
     if (timeLeft > hS){
         localStorage.setItem("highscore", timeLeft)
         localStorage.setItem("initials", initials);
     }
+
+    formEl.textContent = "";
+    var buttonEl = document.createElement("button");
+    buttonEl.textContent = "Play Again";
+
+    mainEl.appendChild(buttonEl);
+
+    buttonEl.addEventListener("click", function(){
+        location.reload();
+    })
 }
 
 //creates a timer that counts down from 75

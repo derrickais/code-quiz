@@ -28,11 +28,11 @@ main {
     margin: 0px auto;
 }
 
-button, li{
+button, li, #submit{
     background-color: #361C75;
     color: white;
     border: 20px;
-    border-radius: 10px;
+    border-radius: 5px;
     padding: 20px 25px;
     font-size: 20px;
 }
@@ -59,4 +59,30 @@ h3 {
     padding: 10px;
 }
 
+.enterHS {
+    align-items: flex-start;
+}
 
+p{
+    font-size: 20px;
+    margin: 2px;
+}
+
+form {
+    display: flex;
+    font-size: 20px;
+    margin: 7px 0px;
+    justify-content: center;
+    align-items: center;
+}
+#submit {
+    padding: 8px 20px;
+    margin: 6px;
+}
+
+#initial {
+    border: 2px solid #77A3D2;
+    width: 237px;
+    height: 35px;
+    margin: 3px;
+}
