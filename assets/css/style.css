@@ -1,6 +1,7 @@
 *{
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
+
 header {
     display: flex;
     width:100%;
@@ -75,6 +76,7 @@ form {
     justify-content: center;
     align-items: center;
 }
+
 #submit {
     padding: 8px 20px;
     margin: 6px;
@@ -85,4 +87,8 @@ form {
     width: 237px;
     height: 35px;
     margin: 3px;
+}
+
+#submit:hover {
+    background-color: #BD60E7;
 }

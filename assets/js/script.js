@@ -1,3 +1,4 @@
+//variables 
 var mainEl = document.querySelector("main");
 var buttonEl = document.querySelector("button");
 var olEl = document.querySelector("ol");
@@ -13,6 +14,7 @@ var timeLeft = 75;
 var time = 2;
 var timeInterval;
 var bannerTime;
+
 var qAndA = [{
     question : "Commonly used data types do NOT include:",
     answers : ["strings", "booleans", "alerts", "numbers"],
@@ -35,26 +37,23 @@ var qAndA = [{
     tAnswer :  "console.log"
 }];
 
-var startQuiz = function(event){
+//loads the current question to the page based on questionNum variable, removes start Quiz button
+var startQuiz = function(){
     
-    //changes h1 into question
     h1El.textContent = qAndA[questionNum].question;
     
-    //removes <p>
     pEl.textContent = "";
-    
-    //creates <li> for each answer
+
     for(i = 0; i < 4; i++){
         var liEl = document.createElement("li");
         liEl.textContent = i+1 + ". " + qAndA[questionNum].answers[i];
         olEl.appendChild(liEl);
     }
 
-    //remove start quiz button
-    buttonEl.remove()
+    buttonEl.remove();
 }
 
-//removes h3 after 5 seconds 
+//sets a timer for showing/hiding the correct/incorrect banner at the bottom of the page
 var bottomBanner = function(){
     h3El.style.display = "block";
 
@@ -72,22 +71,23 @@ var bottomBanner = function(){
     }, 1000);
 }
 
-
+//checks to see if answer is correct/incorrec, takes away points from timer if incorrect, and advances to next 
+//question if possible 
 var checkAnswer = function(event){
     clearInterval(bannerTime);
     answer = event.target;
 
-    correct = answer.textContent.includes(qAndA[questionNum].tAnswer)
-    //checks to see if user clicked right answer 
+    correct = answer.textContent.includes(qAndA[questionNum].tAnswer);
+
     if (answer.localName === "ol"){
         return;
     }
 
     if (correct){
-        h3El.textContent = "Correct!"
+        h3El.textContent = "Correct!";
     }else{
-        h3El.textContent = "Wrong!"
-        //subtract 10 points from timer 
+        h3El.textContent = "Wrong!";
+        
         if (timeLeft > 10){
             timeLeft -= 10;
         } else {
@@ -95,6 +95,7 @@ var checkAnswer = function(event){
             timerEl.textContent = "Timer: 0";
         }
     }
+
     mainEl.appendChild(h3El);
 
     olEl.textContent = "";
@@ -102,8 +103,6 @@ var checkAnswer = function(event){
 
     bottomBanner();
     
-    
-    //checks if there's another question before going to endQuiz()
     if (questionNum == qAndA.length){
         endQuiz();
     }else{
@@ -111,8 +110,8 @@ var checkAnswer = function(event){
     }
 }
 
-//ends quiz and gives player high score 
-var endQuiz = function(event){
+//pauses timer and sets up end game screen in order for user to submit initials 
+var endQuiz = function(){
     
     clearInterval(timeInterval);
     timerEl.textContent = "Timer: " + timeLeft;
@@ -130,6 +129,7 @@ var endQuiz = function(event){
     divEl.addEventListener("submit", highScore);
 }
 
+//retrieves input from form and logs it into localStorage; creates play again button that reloads the game
 var highScore = function(event) {
     event.preventDefault();
 
@@ -138,21 +138,21 @@ var highScore = function(event) {
 
     initials = inputEl.value;
 
-    var hS = localStorage.getItem("highscore")
+    var hS = localStorage.getItem("highscore");
 
     if (hS === null){
         highScore = 0;
     }
     
     if (timeLeft > hS){
-        localStorage.setItem("highscore", timeLeft)
+        localStorage.setItem("highscore", timeLeft);
         localStorage.setItem("initials", initials);
     }
 
     formEl.textContent = "";
+
     var buttonEl = document.createElement("button");
     buttonEl.textContent = "Play Again";
-
     mainEl.appendChild(buttonEl);
 
     buttonEl.addEventListener("click", function(){
@@ -160,8 +160,8 @@ var highScore = function(event) {
     })
 }
 
-//creates a timer that counts down from 75
-var timer = function(event){
+//creates timer that also works as user score
+var timer = function(){
     
     timerEl.textContent = "Timer: " + timeLeft;
 
@@ -173,10 +173,9 @@ var timer = function(event){
             endQuiz();
         }
     }, 1000);
-    
 }
 
-//runs check answer function when user clicks in the <ol>
+//sets up event listeners 
 olEl.addEventListener("click", checkAnswer);
 buttonEl.addEventListener("click", startQuiz);
 buttonEl.addEventListener("click", timer);
